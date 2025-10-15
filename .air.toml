@@ -1,0 +1,52 @@
+root = '.'
+tmp_dir = 'tmp'
+testdata_dir = 'testdata'
+
+[build]
+pre_cmd = []
+cmd = 'task build'
+post_cmd = []
+bin = './starter'
+args_bin = ['serve']
+full_bin = ''
+log = ''
+include_ext = ['go', 'tpl', 'templ', 'html', 'ts', 'css']
+exclude_dir = ['assets', 'node_modules', 'build']
+include_dir = []
+exclude_file = []
+include_file = []
+exclude_regex = ['_test.go', '_templ.go']
+exclude_unchanged = false
+follow_symlink = false
+poll = false
+poll_interval = 0
+delay = 1000
+stop_on_error = true
+send_interrupt = false
+kill_delay = 0
+rerun = false
+rerun_delay = 500
+
+[color]
+main = 'magenta'
+watcher = 'cyan'
+build = 'yellow'
+runner = 'green'
+app = ''
+
+[log]
+time = true
+main_only = false
+silent = false
+
+[misc]
+clean_on_exit = false
+
+[screen]
+clear_on_rebuild = false
+keep_scroll = true
+
+[proxy]
+enabled = true
+proxy_port = 4005
+app_port = 4000

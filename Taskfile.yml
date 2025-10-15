@@ -1,0 +1,34 @@
+version: '3'
+
+tasks:
+  default:
+    desc: 'clean the project, generate templ files and the build the pcf binary'
+    cmds:
+      - task: build
+
+  build:
+    desc: 'generate templ files and the build the pcf binary'
+    deps: [js, tailwind, templ]
+    cmds:
+      - go build -o starter ./main.go
+
+  js:
+    desc: 'run bun javascript bundler'
+    cmds:
+      - "bun run js"
+
+  tailwind:
+    desc: 'run tailwind transpiler'
+    cmds:
+      - "bun run tw"
+
+  templ:
+    desc: 'generate templ files'
+    cmds:
+      - templ generate ./ui/... 
+
+  serve:
+    desc: 'build then serve the project'
+    cmds:
+      - task: build
+      - './starter serve'

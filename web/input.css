@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@import "tailwindcss" source("./ui/*.templ");
+
+@plugin "daisyui" {
+  themes: emerald --default, synthwave;
+  root: ":root";
+  include: ;
+  exclude: ;
+  prefix: ;
+  logs: true;
+}
+
+@custom-variant dark (&:where([data-theme=synthwave], [data-theme=synthwave] *));
+
+.htmx-request .HideOnRequest {
+  display: none;
+}

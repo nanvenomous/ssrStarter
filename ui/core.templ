@@ -1,0 +1,154 @@
+package ui
+
+var (
+	logo = "./assets/package.svg"
+	cssBackgroundGradient = "bg-gradient-to-r from-blue-200 via-sky-100 to-blue-100 dark:from-base-300 dark:via-[#182d70] dark:to-base-200"
+)
+
+templ appLogo() {
+	<img class="h-10 ml-4" src={ logo }/>
+}
+
+// Multi sends multiple templ components one after the other
+// extra useful for htmx out of band swaps
+templ Multi(chn ...templ.Component) {
+	for _, chd := range chn {
+		@chd
+	}
+}
+
+type headerLink struct {
+	Rel, Href string
+}
+
+var (
+	headerLinks = []headerLink{
+		{Rel: "manifest", Href: "/manifest.json"},
+		{Rel: "icon", Href: logo},
+		{Rel: "apple-touch-icon", Href: logo},
+		{Rel: "stylesheet", Href: "/icons/light/style.css"},
+		{Rel: "stylesheet", Href: "/css/tailwind-generated.min.css"},
+	}
+)
+
+templ headers() {
+	<meta charset="utf-8"/>
+	<meta name="description" content="SSR Starter"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	for _, lk := range headerLinks {
+		<link rel={ lk.Rel } href={ lk.Href }/>
+	}
+	<script src="/index.js"></script>
+	<title>SSR Starter</title>
+}
+
+templ progress() {
+	<div class="w-full flex flex-col items-center justify-center">
+		<progress id="progress-indicator" class="progress w-full h-1 htmx-indicator"></progress>
+	</div>
+}
+
+type PropsEmptyModalPopover struct {
+	SwapOOB bool
+}
+
+templ EmptyModalPopover(props PropsEmptyModalPopover) {
+	<dialog
+		id="modal"
+		class="absolute top-0 w-full z-30 pointer-events-none"
+		if props.SwapOOB {
+			hx-swap-oob="outerHTML:#modal"
+		}
+	></dialog>
+}
+
+templ popovers() {
+	<div
+		id="toastContainer"
+		class="fixed top-0 left-0 right-0 flex flex-col justify-start items-center z-50 pointer-events-none"
+	></div>
+	<div class="fixed top-0 left-0 right-0 z-40 pointer-events-none">
+		@progress()
+	</div>
+	@EmptyModalPopover(PropsEmptyModalPopover{})
+}
+
+templ Page() {
+	<head>
+		@headers()
+	</head>
+	<body class="absolute top-0 bottom-0 left-0 right-0 bg-base">
+		@popovers()
+		@navSideBar() {
+			<div id={ "appContent" } class="w-full h-full">
+				{ children... }
+			</div>
+		}
+	</body>
+}
+
+templ tooltip(label, targetID, triggerID, css string) {
+	<div class={ "tooltip", css } data-tip={ label }>
+		{ children... }
+	</div>
+}
+
+templ icon(id, css string) {
+	<i
+		if id != "" {
+			id={ id }
+		}
+		class={ "ph-light", css }
+	></i>
+}
+
+templ sideBarItem(id, name, icn string, rt string) {
+	@tooltip(name, "", "", "tooltip-bottom") {
+		<a href={ templ.SafeURL(rt) }>
+			<li
+				id={ id }
+				class={ "flex items-center p-2 rounded-lg group btn-ghost", }
+			>
+				@icon("", icn+" text-2xl")
+			</li>
+		</a>
+	}
+}
+
+templ navSideBarItems() {
+	@sideBarItem("searchIntakesSidebarButton", "Search Intakes", "ph-magnifying-glass", "/")
+}
+
+templ navSideBar() {
+	<div class="drawer w-full h-full">
+		<input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
+		<div class="drawer-content h-[calc(100vh-4rem)] max-h-full flex flex-col flex-1 ">
+			<!-- Navbar -->
+			<div class={ "navbar w-full p-2 h-16", cssBackgroundGradient }>
+				<div class="flex-none lg:hidden">
+					<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+						@icon("", "ph-list text-3xl")
+					</label>
+				</div>
+				@appLogo()
+				<div class="flex-1"></div>
+				<div class="hidden flex-none lg:block">
+					<ul class="menu menu-horizontal">
+						<!-- Navbar menu content here -->
+						@navSideBarItems()
+					</ul>
+				</div>
+			</div>
+			<div class="flex flex-1 max-h-full" id="sidebarContent">
+				{ children... }
+			</div>
+		</div>
+		<div class="drawer-side">
+			<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+			<ul class="menu bg-base-200 min-h-full p-4">
+				<!-- Sidebar content here -->
+				@navSideBarItems()
+			</ul>
+		</div>
+	</div>
+}
