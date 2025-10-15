@@ -1,0 +1,38 @@
+package ui
+
+templ PageModal() {
+	@Page() {
+		<div class="w-full h-full flex items-center justify-center">
+			<button
+				class="btn btn-primary"
+				hx-put={ "/modal" }
+				hx-target="#modal"
+				hx-swap="outerHTML"
+			>
+				Open Modal
+			</button>
+		</div>
+	}
+}
+
+type propsModal struct {
+	CSS string
+}
+
+templ modal(props propsModal) {
+	<dialog open id="modal" class="modal overscroll-none">
+		<div
+			id="modal-box"
+			class={ "modal-box bg-base-100", props.CSS }
+		>
+			{ children... }
+		</div>
+		@templ.JSFuncCall("dialogEventHandler", "modal")
+	</dialog>
+}
+
+templ ExampleModal() {
+	@modal(propsModal{}) {
+		<div>hello</div>
+	}
+}

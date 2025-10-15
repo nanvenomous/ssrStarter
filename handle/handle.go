@@ -37,6 +37,7 @@ func Setup(mux *http.ServeMux, buildFS embed.FS) (http.Handler, error) {
 	})
 
 	SetupHome(mux)
+	SetupModal(mux)
 
 	return loggingMiddleware(mux), nil
 }
