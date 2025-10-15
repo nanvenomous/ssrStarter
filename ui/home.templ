@@ -13,11 +13,11 @@ templ htmxCounter() {
 				<h2 class="card-title">HTMX Counter</h2>
 				<div class="stat">
 					<div class="stat-title">Current Count</div>
-					<div class="stat-value text-primary" id="counter-value">0</div>
+					<div class="stat-value text-secondary" id="counter-value">0</div>
 				</div>
 				<div class="card-actions justify-center gap-4">
 					<button
-						class="btn btn-secondary"
+						class="btn btn-error"
 						hx-post="/counter?op=dec"
 						hx-target="#counter-value"
 						hx-swap="innerHTML"

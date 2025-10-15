@@ -6,9 +6,6 @@
 @plugin "daisyui" {
   themes: emerald --default, synthwave;
   root: ":root";
-  include: ;
-  exclude: ;
-  prefix: ;
   logs: true;
 }
 
