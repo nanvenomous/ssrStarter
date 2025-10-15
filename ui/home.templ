@@ -2,9 +2,44 @@ package ui
 
 templ Home() {
 	@Page() {
-    @htmxCounter()
+		@htmxCounter()
 	}
 }
 
 templ htmxCounter() {
+	<div class="w-full h-full flex items-center justify-center">
+		<div class="card w-96 bg-base-100 shadow-xl">
+			<div class="card-body items-center text-center">
+				<h2 class="card-title">HTMX Counter</h2>
+				<div class="stat">
+					<div class="stat-title">Current Count</div>
+					<div class="stat-value text-primary" id="counter-value">0</div>
+				</div>
+				<div class="card-actions justify-center gap-4">
+					<button
+						class="btn btn-secondary"
+						hx-post="/counter?op=dec"
+						hx-target="#counter-value"
+						hx-swap="innerHTML"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+						</svg>
+						Decrement
+					</button>
+					<button
+						class="btn btn-primary"
+						hx-post="/counter?op=inc"
+						hx-target="#counter-value"
+						hx-swap="innerHTML"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+						</svg>
+						Increment
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 }
