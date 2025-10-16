@@ -36,6 +36,7 @@ func Setup(mux *http.ServeMux, buildFS embed.FS) (http.Handler, error) {
 		serveResourceCachedETag(w, r, getBundledFile)
 	})
 
+	SetupAlert(mux)
 	SetupHome(mux)
 	SetupModal(mux)
 

@@ -1,0 +1,130 @@
+package ui
+
+type AlertType string
+
+const (
+	AlertTypeInfo    AlertType = "alert-info"
+	AlertTypeSuccess AlertType = "alert-success"
+	AlertTypeWarning AlertType = "alert-warning"
+	AlertTypeError   AlertType = "alert-error"
+)
+
+var (
+	cssAlert = map[AlertType]string{
+		AlertTypeInfo:    "alert-info",
+		AlertTypeSuccess: "alert-success",
+		AlertTypeWarning: "alert-warning",
+		AlertTypeError:   "alert-error",
+	}
+
+	cssAlertIcon = map[AlertType]string{
+		AlertTypeInfo:    "ph-info",
+		AlertTypeSuccess: "ph-check-circle",
+		AlertTypeWarning: "ph-warning",
+		AlertTypeError:   "ph-warning-circle",
+	}
+)
+
+type PropsAlert struct {
+	Label string
+	Type  AlertType
+}
+
+templ Alert(props PropsAlert) {
+	@alert(props.Label, props.Type, NanoID())
+}
+
+templ alert(label string, typ AlertType, baseID string) {
+	<div hx-swap-oob="beforeend:#toastContainer">
+		<div
+			id={ "toastNotif_" + baseID }
+			role="alert"
+			class={ "alert", cssAlert[typ], "mt-4 pointer-events-auto" }
+		>
+			@icon("", "text-xl "+cssAlertIcon[typ])
+			<span>{ label }</span>
+			<button id={ "toastDismissBtn_" + baseID } class="btn btn-ghost btn-square cursor-pointer h-6 w-6">
+				@icon("", "ph-x text-xl")
+			</button>
+		</div>
+		@templ.JSFuncCall(
+			"dismissAlert",
+			"toastNotif_"+baseID,
+			"toastDismissBtn_"+baseID,
+			6,
+		)
+	</div>
+}
+
+type PropsAlertTestButton struct {
+	Type    string
+	Clicked bool
+}
+
+templ AlertTestButton(props PropsAlertTestButton) {
+	<button
+		id={ "alert-test-button-" + props.Type }
+		class={
+			"btn gap-2 min-w-32",
+			templ.KV("btn-primary", !props.Clicked),
+			templ.KV("btn-success", props.Clicked),
+		}
+		hx-post={ "/alert?type=" + props.Type }
+		hx-target={ "#alert-test-button-" + props.Type }
+		hx-swap="outerHTML"
+	>
+		if props.Clicked {
+			@icon("", "ph-check text-lg")
+			if props.Type == "info" {
+				Info
+			} else if props.Type == "success" {
+				Success  
+			} else if props.Type == "warning" {
+				Warning
+			} else if props.Type == "error" {
+				Error
+			}
+		} else {
+			@icon("", cssAlertIcon[AlertType("alert-"+props.Type)]+" text-lg")
+			if props.Type == "info" {
+				Test Info
+			} else if props.Type == "success" {
+				Test Success  
+			} else if props.Type == "warning" {
+				Test Warning
+			} else if props.Type == "error" {
+				Test Error
+			}
+		}
+	</button>
+}
+
+templ PageAlert() {
+	@Page() {
+		<div class="w-full h-full flex items-center justify-center">
+			<div class="text-center space-y-8 max-w-2xl">
+				<h1 class="text-4xl font-bold text-base-content mb-6">Alert</h1>
+				<p class="text-base-content/70 mb-8">
+					Click any button below. The alerts appear as toast notifications with automatic dismissal.
+				</p>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+					@AlertTestButton(PropsAlertTestButton{Type: "info", Clicked: false})
+					@AlertTestButton(PropsAlertTestButton{Type: "success", Clicked: false})
+					@AlertTestButton(PropsAlertTestButton{Type: "warning", Clicked: false})
+					@AlertTestButton(PropsAlertTestButton{Type: "error", Clicked: false})
+				</div>
+				
+				<div class="mt-8 p-6 bg-base-200 rounded-lg text-left">
+					<h3 class="text-lg font-semibold mb-4">How it works:</h3>
+					<ul class="list-disc list-inside space-y-2 text-sm text-base-content/70">
+						<li>Each button sends an HTMX POST request to the alert endpoint</li>
+						<li>The server responds with both the updated button state and an alert toast</li>
+						<li>The alert uses out-of-band updates to appear in the toast container</li>
+						<li>Alerts auto-dismiss after 6 seconds and can be manually closed</li>
+						<li>The button changes to a clicked state to show the action was processed</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	}
+}

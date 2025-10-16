@@ -1,9 +1,23 @@
 package ui
+import (
+	gonanoid "github.com/matoous/go-nanoid/v2"
+	"fmt"
+	"math/rand"
+)
 
 var (
 	logo                  = "./assets/package.svg"
 	cssBackgroundGradient = "bg-gradient-to-r from-blue-200 via-sky-100 to-blue-100 dark:from-base-300 dark:via-[#182d70] dark:to-base-200"
 )
+
+func NanoID() string {
+	id, err := gonanoid.New()
+	if err != nil {
+		min, max := 1, 9999999
+		return fmt.Sprintf("%d", rand.Intn(max-min+1)+min)
+	}
+	return id
+}
 
 templ appLogo() {
 	<img class="h-10 ml-4" src={ logo }/>
@@ -135,6 +149,7 @@ templ navSideBar() {
 				<!-- Sidebar content here -->
 				<li><a href={ "/" }>Counter</a></li>
 				<li><a href={ "/modal" }>Modal</a></li>
+				<li><a href={ "/alert" }>Alerts</a></li>
 			</ul>
 		</div>
 	</div>
