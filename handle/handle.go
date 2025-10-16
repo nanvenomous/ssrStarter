@@ -17,8 +17,11 @@ import (
 	"github.com/nanvenomous/ssrStarter/ui"
 )
 
+type setupFunc func(mux *http.ServeMux)
+
 var (
 	embeddedResources fs.FS
+	setupFuncs        = []setupFunc{}
 )
 
 func Setup(mux *http.ServeMux, buildFS embed.FS) (http.Handler, error) {
@@ -36,10 +39,9 @@ func Setup(mux *http.ServeMux, buildFS embed.FS) (http.Handler, error) {
 		serveResourceCachedETag(w, r, getBundledFile)
 	})
 
-	SetupAlert(mux)
-	SetupHome(mux)
-	SetupModal(mux)
-	SetupThemeController(mux)
+	for _, fn := range setupFuncs {
+		fn(mux)
+	}
 
 	return loggingMiddleware(mux), nil
 }

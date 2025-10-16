@@ -6,13 +6,17 @@ import (
 	"github.com/nanvenomous/ssrStarter/ui"
 )
 
-func SetupThemeController(mux *http.ServeMux) {
-	mux.HandleFunc("/theme", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case http.MethodGet:
-			ThemeHandler(w, r)
-			return
-		}
+func init() {
+	setupFuncs = append(setupFuncs, func(mux *http.ServeMux) {
+
+		mux.HandleFunc("/theme", func(w http.ResponseWriter, r *http.Request) {
+			switch r.Method {
+			case http.MethodGet:
+				ThemeHandler(w, r)
+				return
+			}
+		})
+
 	})
 }
 

@@ -6,29 +6,33 @@ import (
 	"github.com/nanvenomous/ssrStarter/ui"
 )
 
-func SetupModal(mux *http.ServeMux) {
-	mux.HandleFunc("/modal", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case http.MethodGet:
-			ModalHandler(w, r)
-			return
-		case http.MethodPut:
-			stts, err := render(w, r,
-				ui.ExampleModal(),
-			)
-			if err != nil {
-				errorHTTP(w, stts, err)
+func init() {
+	setupFuncs = append(setupFuncs, func(mux *http.ServeMux) {
+
+		mux.HandleFunc("/modal", func(w http.ResponseWriter, r *http.Request) {
+			switch r.Method {
+			case http.MethodGet:
+				ModalHandler(w, r)
+				return
+			case http.MethodPut:
+				stts, err := render(w, r,
+					ui.ExampleModal(),
+				)
+				if err != nil {
+					errorHTTP(w, stts, err)
+				}
+				return
+			case http.MethodDelete:
+				stts, err := render(w, r,
+					ui.EmptyModalPopover(ui.PropsEmptyModalPopover{}),
+				)
+				if err != nil {
+					errorHTTP(w, stts, err)
+				}
+				return
 			}
-			return
-		case http.MethodDelete:
-			stts, err := render(w, r,
-				ui.EmptyModalPopover(ui.PropsEmptyModalPopover{}),
-			)
-			if err != nil {
-				errorHTTP(w, stts, err)
-			}
-			return
-		}
+		})
+
 	})
 }
 

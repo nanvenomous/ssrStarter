@@ -8,6 +8,12 @@ import (
 	"github.com/nanvenomous/ssrStarter/ui"
 )
 
+func init() {
+	setupFuncs = append(setupFuncs, func(mux *http.ServeMux) {
+		mux.HandleFunc("/counter", CounterHandler)
+	})
+}
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	stts, err := render(w, r,
 		ui.Home(),
@@ -45,8 +51,4 @@ func CounterHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(strconv.Itoa(currentValue)))
-}
-
-func SetupHome(mux *http.ServeMux) {
-	mux.HandleFunc("/counter", CounterHandler)
 }
