@@ -1,7 +1,8 @@
 package ui
+
 import (
-	gonanoid "github.com/matoous/go-nanoid/v2"
 	"fmt"
+	gonanoid "github.com/matoous/go-nanoid/v2"
 	"math/rand"
 )
 
@@ -53,6 +54,7 @@ templ headers() {
 		<link rel={ lk.Rel } href={ lk.Href }/>
 	}
 	<script src="/index.js"></script>
+	@templ.JSFuncCall("applySavedTheme")
 	<title>SSR Starter</title>
 }
 
@@ -150,6 +152,7 @@ templ navSideBar() {
 				<li><a href={ "/" }>Counter</a></li>
 				<li><a href={ "/modal" }>Modal</a></li>
 				<li><a href={ "/alert" }>Alerts</a></li>
+				<li><a href={ "/theme" }>Theme</a></li>
 			</ul>
 		</div>
 	</div>

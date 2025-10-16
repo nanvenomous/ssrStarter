@@ -1,0 +1,188 @@
+package ui
+
+templ themeController() {
+	<li class="flex items-center p-2 rounded-lg group btn-ghost">
+		<label class="swap swap-rotate">
+			<!-- this hidden checkbox controls the state -->
+			<input id="theme-toggle" type="checkbox" class="theme-controller" onchange="persistTheme(this)" value="synthwave"/>
+			<!-- sun icon -->
+			@icon("", "ph-sun text-2xl swap-off")
+			<!-- moon icon -->
+			@icon("", "ph-moon text-2xl swap-on")
+		</label>
+	</li>
+}
+
+templ ThemeControllerDemo() {
+	<div class="p-6 bg-base-200 rounded-lg">
+		<div class="flex items-center justify-center p-4 bg-base-100 rounded-lg">
+			<label class="swap swap-rotate text-4xl">
+				<input type="checkbox" class="theme-controller" onchange="persistTheme(this)" value="synthwave"/>
+				<div class="swap-off flex flex-col items-center gap-2">
+					@icon("", "ph-sun text-4xl text-warning")
+					<span class="text-sm text-base-content">Light Mode</span>
+				</div>
+				<div class="swap-on flex flex-col items-center gap-2">
+					@icon("", "ph-moon text-4xl text-info")
+					<span class="text-sm text-base-content">Dark Mode</span>
+				</div>
+			</label>
+		</div>
+		<p class="text-sm text-base-content/70 mt-3 text-center">
+			Click the icon above to toggle between light and dark themes
+		</p>
+		<div class="mt-4 text-center">
+			<div class="badge badge-outline">
+				Current theme: <span id="current-theme">Loading...</span>
+			</div>
+		</div>
+		@templ.JSFuncCall("updateThemeDisplay")
+	</div>
+}
+
+templ PageTheme() {
+	@Page() {
+		<div class="w-full h-full p-8">
+			<div class="max-w-4xl mx-auto space-y-8">
+				<div class="text-center">
+					<h1 class="text-4xl font-bold text-base-content mb-4">Theme Controller</h1>
+					<p class="text-lg text-base-content/70 mb-8">
+						Dynamic theme switching with various UI components
+					</p>
+				</div>
+				<!-- Theme Toggle Demo -->
+				@ThemeControllerDemo()
+				<!-- Component Showcase -->
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+					<!-- Buttons -->
+					<div class="card bg-base-100 shadow-lg">
+						<div class="card-body">
+							<h2 class="card-title text-base-content">Buttons</h2>
+							<div class="flex flex-wrap gap-2">
+								<button class="btn btn-primary">Primary</button>
+								<button class="btn btn-secondary">Secondary</button>
+								<button class="btn btn-accent">Accent</button>
+								<button class="btn btn-neutral">Neutral</button>
+							</div>
+							<div class="flex flex-wrap gap-2">
+								<button class="btn btn-info">Info</button>
+								<button class="btn btn-success">Success</button>
+								<button class="btn btn-warning">Warning</button>
+								<button class="btn btn-error">Error</button>
+							</div>
+						</div>
+					</div>
+					<!-- Alerts -->
+					<div class="card bg-base-100 shadow-lg">
+						<div class="card-body">
+							<h2 class="card-title text-base-content">Alerts</h2>
+							<div class="space-y-2">
+								<div class="alert alert-info">
+									@icon("", "ph-info text-lg")
+									<span>Info alert example</span>
+								</div>
+								<div class="alert alert-success">
+									@icon("", "ph-check-circle text-lg")
+									<span>Success alert example</span>
+								</div>
+								<div class="alert alert-warning">
+									@icon("", "ph-warning text-lg")
+									<span>Warning alert example</span>
+								</div>
+								<div class="alert alert-error">
+									@icon("", "ph-warning-circle text-lg")
+									<span>Error alert example</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Forms -->
+					<div class="card bg-base-100 shadow-lg">
+						<div class="card-body">
+							<h2 class="card-title text-base-content">Form Elements</h2>
+							<div class="space-y-4">
+								<div class="form-control">
+									<label class="label">
+										<span class="label-text">Text Input</span>
+									</label>
+									<input type="text" placeholder="Enter text here" class="input input-bordered"/>
+								</div>
+								<div class="form-control">
+									<label class="label">
+										<span class="label-text">Select</span>
+									</label>
+									<select class="select select-bordered">
+										<option disabled selected>Choose option</option>
+										<option>Option 1</option>
+										<option>Option 2</option>
+										<option>Option 3</option>
+									</select>
+								</div>
+								<div class="form-control">
+									<label class="label cursor-pointer">
+										<span class="label-text">Checkbox</span>
+										<input type="checkbox" class="checkbox"/>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Progress & Stats -->
+					<div class="card bg-base-100 shadow-lg">
+						<div class="card-body">
+							<h2 class="card-title text-base-content">Progress & Stats</h2>
+							<div class="space-y-4">
+								<div>
+									<div class="text-sm text-base-content/70 mb-1">Progress</div>
+									<progress class="progress progress-primary w-full" value="32" max="100"></progress>
+								</div>
+								<div>
+									<div class="text-sm text-base-content/70 mb-1">Loading</div>
+									<progress class="progress progress-secondary w-full" value="70" max="100"></progress>
+								</div>
+								<div class="stats bg-base-200 shadow">
+									<div class="stat">
+										<div class="stat-title">Total Users</div>
+										<div class="stat-value text-primary">1,234</div>
+										<div class="stat-desc">21% more than last month</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Theme Information -->
+				<div class="card bg-base-100 shadow-lg">
+					<div class="card-body">
+						<h2 class="card-title text-base-content">Theme System Information</h2>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<h3 class="text-lg font-semibold mb-3 text-base-content">How it works:</h3>
+								<ul class="list-disc list-inside space-y-2 text-sm text-base-content/70">
+									<li>Theme preference is saved in localStorage</li>
+									<li>Default theme is "emerald" (light mode)</li>
+									<li>Dark theme is "synthwave"</li>
+									<li>All theme toggles sync automatically</li>
+									<li>Theme persists across page reloads</li>
+								</ul>
+							</div>
+							<div>
+								<h3 class="text-lg font-semibold mb-3 text-base-content">Available Themes:</h3>
+								<div class="space-y-2">
+									<div class="flex items-center gap-2">
+										@icon("", "ph-sun text-lg text-warning")
+										<span class="text-sm text-base-content">Emerald (Light)</span>
+									</div>
+									<div class="flex items-center gap-2">
+										@icon("", "ph-moon text-lg text-info")
+										<span class="text-sm text-base-content">Synthwave (Dark)</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
