@@ -31,16 +31,8 @@ func Setup(mux *http.ServeMux, buildFS embed.FS) (http.Handler, error) {
 		return mux, err
 	}
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if slices.Contains([]string{"", "/"}, r.URL.Path) {
-			HomeHandler(w, r)
-			return
-		}
-		serveResourceCachedETag(w, r, getBundledFile)
-	})
-
-	for _, fn := range setupFuncs {
-		fn(mux)
+	for _, sfn := range setupFuncs {
+		sfn(mux)
 	}
 
 	return loggingMiddleware(mux), nil

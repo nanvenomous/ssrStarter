@@ -1,0 +1,51 @@
+package ui
+
+templ progress() {
+	<div class="w-full flex flex-col items-center justify-center ">
+		<progress
+			id="progress-indicator"
+			class={ "progress progress-accent w-full h-1 htmx-indicator" }
+		></progress>
+	</div>
+}
+
+templ ProgressButton() {
+	<button
+		id="progress-btn"
+		class="btn btn-primary gap-2"
+		hx-post="/progress"
+		hx-target="#progress-btn"
+		hx-swap="outerHTML"
+		hx-indicator="#progress-indicator"
+		hx-disabled-elt="this"
+	>
+		@icon("", "ph-play text-lg")
+		Start Task (4s)
+	</button>
+}
+
+templ PageProgress() {
+	@Page() {
+		<div class="w-full h-full flex items-center justify-center">
+			<div class="text-center space-y-8 max-w-2xl">
+				<h1 class="text-4xl font-bold text-base-content mb-6">Progress Indicator Demo</h1>
+				<p class="text-base-content/70 mb-8">
+					Click the button below to start a 4-second task. Watch the progress bar at the top 
+					of the page and notice how the button is disabled during the request.
+				</p>
+				@ProgressButton()
+				<div class="mt-8 p-6 bg-base-200 rounded-lg text-left">
+					<h3 class="text-lg font-semibold mb-4">How it works:</h3>
+					<ul class="list-disc list-inside space-y-2 text-sm text-base-content/70">
+						<li><code>hx-indicator="#progress-indicator"</code> shows the progress bar</li>
+						<li><code>hx-disabled-elt="this"</code> disables the button during the request</li>
+						<li><code>hx-target="#progress-btn"</code> replaces the button with itself</li>
+						<li>Server sleeps for 4 seconds to simulate processing</li>
+						<li>Success alert is sent out-of-band to the toast container</li>
+						<li>Button returns to original state after completion</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	}
+}

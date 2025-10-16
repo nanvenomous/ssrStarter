@@ -58,12 +58,6 @@ templ headers() {
 	<title>SSR Starter</title>
 }
 
-templ progress() {
-	<div class="w-full flex flex-col items-center justify-center">
-		<progress id="progress-indicator" class="progress w-full h-1 htmx-indicator"></progress>
-	</div>
-}
-
 type PropsEmptyModalPopover struct {
 	SwapOOB bool
 }
@@ -149,10 +143,11 @@ templ navSideBar() {
 			<label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
 			<ul class="menu bg-base-200 min-h-full w-80 p-4">
 				<!-- Sidebar content here -->
-				<li><a href={ "/alert" }>Alerts</a></li>
 				<li><a href={ "/" }>Counter</a></li>
 				<li><a href={ "/modal" }>Modal</a></li>
-				<li><a href={ "/theme" }>Theme Controller</a></li>
+				<li><a href={ "/alert" }>Alerts</a></li>
+				<li><a href={ "/progress" }>Progress</a></li>
+				<li><a href={ "/theme" }>Theme</a></li>
 			</ul>
 		</div>
 	</div>

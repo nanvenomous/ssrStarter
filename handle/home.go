@@ -2,6 +2,7 @@ package handle
 
 import (
 	"net/http"
+	"slices"
 	"strconv"
 	"sync"
 
@@ -10,7 +11,17 @@ import (
 
 func init() {
 	setupFuncs = append(setupFuncs, func(mux *http.ServeMux) {
+
+		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			if slices.Contains([]string{"", "/"}, r.URL.Path) {
+				HomeHandler(w, r)
+				return
+			}
+			serveResourceCachedETag(w, r, getBundledFile)
+		})
+
 		mux.HandleFunc("/counter", CounterHandler)
+
 	})
 }
 
