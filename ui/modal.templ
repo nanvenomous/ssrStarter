@@ -3,14 +3,21 @@ package ui
 templ PageModal() {
 	@Page() {
 		<div class="w-full h-full flex items-center justify-center">
-			<button
-				class="btn btn-primary"
-				hx-put={ "/modal" }
-				hx-target="#modal"
-				hx-swap="outerHTML"
-			>
-				Open Modal
-			</button>
+			<div class="text-center space-y-4">
+				<h1 class="text-4xl font-bold text-base-content mb-6">Modal Example</h1>
+				<p class="text-base-content/70 mb-8 max-w-md">
+					Click the button below to open server driven modal.
+				</p>
+				<button
+					class="btn btn-primary btn-lg gap-2"
+					hx-put="/modal"
+					hx-target="#modal"
+					hx-swap="outerHTML"
+				>
+					@icon("", "ph-cursor-click text-lg")
+					Open Modal
+				</button>
+			</div>
 		</div>
 	}
 }
@@ -32,7 +39,52 @@ templ modal(props propsModal) {
 }
 
 templ ExampleModal() {
-	@modal(propsModal{}) {
-		<div>hello</div>
+	@modal(propsModal{CSS: "max-w-md"}) {
+		<div class="flex flex-col space-y-4">
+			<!-- Modal Header -->
+			<div class="flex items-center justify-between">
+				<h3 class="text-xl font-bold text-base-content">Example Modal</h3>
+				<button
+					class="btn btn-sm btn-circle btn-ghost"
+					hx-delete="/modal"
+					hx-target="#modal"
+					hx-swap="outerHTML"
+					aria-label="Close modal"
+				>
+					@icon("", "ph-x text-lg")
+				</button>
+			</div>
+			
+			<!-- Modal Content -->
+			<div class="py-4">
+				<p class="text-base-content/80 mb-4">
+					This is an example modal with improved styling and functionality.
+				</p>
+				<div class="bg-base-200 rounded-lg p-4 mb-4">
+					<h4 class="font-semibold text-base-content mb-2">Features:</h4>
+					<ul class="list-disc list-inside text-sm text-base-content/70 space-y-1">
+						<li>Clean, modern design</li>
+						<li>Responsive layout</li>
+						<li>Accessible close button</li>
+						<li>Proper spacing and typography</li>
+					</ul>
+				</div>
+			</div>
+			
+			<!-- Modal Actions -->
+			<div class="flex justify-end space-x-2">
+				<button
+					class="btn btn-ghost"
+					hx-delete="/modal"
+					hx-target="#modal"
+					hx-swap="outerHTML"
+				>
+					Cancel
+				</button>
+				<button class="btn btn-primary">
+					Save Changes
+				</button>
+			</div>
+		</div>
 	}
 }
