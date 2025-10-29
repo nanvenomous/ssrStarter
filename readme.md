@@ -2,13 +2,6 @@
 
 ![SSR Starter](.rsrc/ssrStarter.png)
 
-## Prerequesites
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [go](https://go.dev/doc/install)
-- [task](https://taskfile.dev/installation/)
-- [templ](https://templ.guide/quick-start/installation/)
-- [air](https://github.com/air-verse/air)
-- [bun](https://bun.sh/docs/installation)
 
 ## Usage
 
@@ -18,17 +11,34 @@ git clone https://github.com/nanvenomous/ssrStarter.git
 cd ssrStarter
 ```
 
+### With Docker Compose
+```bash
+docker compose up --build
+```
+
+go to [http://localhost:4005](http://localhost:4005)
+
+### On bare metal (tested on Linux, MacOS, and WSL)
+
+#### Prerequesites
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [go](https://go.dev/doc/install)
+- [task](https://taskfile.dev/installation/)
+- [templ](https://templ.guide/quick-start/installation/)
+- [air](https://github.com/air-verse/air)
+- [bun](https://bun.sh/docs/installation)
+
 first time you need to install the web dependencies
 ```bash
 bun install
 ```
 
 run the project
-- you can run the concurrent build and serve the project at `http://localhost:4000`
+- you can run the concurrent build and serve the project at [http://localhost:4000](http://localhost:4000)
     ```bash
     task serve
     ```
-- **OR** run air (for hot reloading) and go to `http://localhost:4005`
+- **OR** run air (for hot reloading) and go to [http://localhost:4005](http://localhost:4005)
     ```bash
     air
     ```

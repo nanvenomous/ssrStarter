@@ -1,0 +1,38 @@
+FROM golang:1.25-alpine
+
+# Install system dependencies
+RUN apk add --no-cache curl unzip bash libgcc libstdc++
+
+# Install Task runner
+RUN go install github.com/go-task/task/v3/cmd/task@v3.38.0
+
+# Install Air for hot reloading
+RUN go install github.com/air-verse/air@latest
+
+# Install templ
+RUN go install github.com/a-h/templ/cmd/templ@latest
+
+# Install bun
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:$PATH"
+
+WORKDIR /app
+
+# Copy go mod files
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy package.json and install JS dependencies
+COPY package.json bun.lockb ./
+RUN bun install
+
+# Copy Taskfile
+COPY Taskfile.yml ./
+
+# Copy air configuration
+COPY .air.toml ./
+
+# Create tmp directory for builds
+RUN mkdir -p tmp
+
+CMD ["air"]

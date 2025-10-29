@@ -1,0 +1,15 @@
+services:
+  starter:
+    ports:
+      - "4005:4005"
+    build:
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:/app
+      - /app/tmp
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
